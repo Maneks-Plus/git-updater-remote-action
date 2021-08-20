@@ -15,9 +15,13 @@ inputs:
   branch:
     description: 'Name of git branch configured on WP site'
     required: true
+outputs:
+  error-status:
+    description: "Error status, 0 or 1"
+    value: ${{ steps.wp-request.error-status }}
 runs:
   using: "composite"
   steps:
     - id: wp-request
       shell: bash
-      run: ${{ github.action_path }}/request.sh "https://${{inputs.domain}}/wp-json/git-updater/v1/update/?key=${{inputs.key}}&${{inputs.type}}=${{inputs.repo}}&branch=${{inputs.branch}}"
+      run: exit $(${{ github.action_path }}/request.sh "https://${{inputs.domain}}/wp-json/git-updater/v1/update/?key=${{inputs.key}}&${{inputs.type}}=${{inputs.repo}}&branch=${{inputs.branch}}")
