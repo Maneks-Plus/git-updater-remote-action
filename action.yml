@@ -19,6 +19,7 @@ runs:
   using: "composite"
   steps:
     - name: Send Update Request
+      shell: bash
       id: gu_send_rest_api_request
       uses: fjogeleit/http-request-action@master
       with:
@@ -26,4 +27,5 @@ runs:
         url: "https://${{inputs.domain}}/wp-json/git-updater/v1/update/?key=${{inputs.key}}&${{inputs.type}}=${{inputs.repo}}&branch=${{inputs.branch}}"
         method: 'GET'
     - name: Print WP Response
+      shell: bash
       run: echo ${{ steps.gu_send_rest_api_request.outputs.response }}
