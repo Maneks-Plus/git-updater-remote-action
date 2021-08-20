@@ -16,7 +16,7 @@ inputs:
     description: 'Name of git branch configured on WP site'
     required: true
 runs:
-  using: "ubuntu-latest"
+  using: "composite"
   steps:
     - id: wp-request
       shell: bash
