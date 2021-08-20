@@ -1,0 +1,29 @@
+name: 'Git Updater Remote Trigger'
+inputs:
+  domain:
+    description: 'Provide webiste domain e.g. example.com'
+    required: true
+  key:
+    description: 'Git Updater key'
+    required: true
+  type:
+    description: 'Accepts "theme" or "plugin"'
+    required: true
+  repo:
+    description: 'Git repository name'
+    required: true
+  branch:
+    description: 'Name of git branch configured on WP site'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Send Update Request
+      id: gu_send_rest_api_request
+      uses: fjogeleit/http-request-action@master
+      with:
+        #url: format('https://{0}/wp-json/git-updater/v1/update/?key={1}&theme=maneks-theme&branch=main', 'primepick.si', ${{secrets.PP_SI_REMOTE_KEY}}
+        url: "https://${{inputs.domain}}/wp-json/git-updater/v1/update/?key=${{inputs.key}}&${{inputs.type}}=${{inputs.repo}}&branch=${{inputs.branch}}"
+        method: 'GET'
+    - name: Print WP Response
+      run: echo ${{ steps.gu_send_rest_api_request.outputs.response }}
